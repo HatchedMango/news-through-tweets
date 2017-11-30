@@ -20,10 +20,11 @@ export default class TweetsView extends React.Component {
     return tweetsByDay.map((tweets, index) => {
       return (
         <DayView
+          key={index}
           tweets={tweets}
           dayName={dayNames[index]}
           dayColorTheme={dayColorThemes[index]}
-          onTweetRead={() => this.props.onTweetRead()}
+          onTweetRead={(storyUrl) => this.props.onTweetRead(storyUrl)}
           onTweetSave={() => this.props.onTweetSave()}
         />
       );

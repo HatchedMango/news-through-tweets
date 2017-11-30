@@ -18,7 +18,7 @@ export default class Tweet extends React.Component {
         <View style={{ overflow: 'hidden', borderRadius: 3, width: '100%', flexDirection: 'row', justifyContent: 'space-between' }}>
           <View style={{ width: '49.7%', backgroundColor: '#f5f9fa' }}>
             <Button
-              onPress={() => this.props.onReadPress()}
+              onPress={() => this.props.onReadPress(tweet.source_url)}
               title="Read"
             />
           </View>

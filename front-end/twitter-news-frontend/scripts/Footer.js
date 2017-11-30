@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { StyleSheet, Text, View, Image, TouchableWithoutFeedback } from 'react-native';
-import { getFooterViewIcons, getListOfViews } from './util.js';
+import { getFooterViewIcons, getListOfViews } from './display.js';
 
 export default class Footer extends React.Component {
   render() {
@@ -20,7 +20,7 @@ export default class Footer extends React.Component {
 
     return viewIconsList.map((icon, index) => {
       return (
-        <TouchableWithoutFeedback onPress={() => this.props.onViewSelect(viewList[index])}>
+        <TouchableWithoutFeedback key={index} onPress={() => this.props.onViewSelect(viewList[index])}>
           <Image 
             style={styles.image} 
             source={icon}

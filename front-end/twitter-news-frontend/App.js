@@ -12,6 +12,7 @@ export default class App extends React.Component {
       currentRender: 'main',
       currentView: 'world_news',
       tweetsForView: [],
+      urlForRead: '',
     }
 
     this.fetchTweetsDummy('world_news');
@@ -28,7 +29,7 @@ export default class App extends React.Component {
             <View style={styles.scrollableView}>
               <TweetsView
                 tweets={this.state.tweetsForView}
-                onTweetRead={() => this.launchReadView()}
+                onTweetRead={(storyUrl) => this.launchReadView(storyUrl)}
                 onTweetSave={() => this.saveTweetData()}
               />
             </View>
@@ -40,18 +41,23 @@ export default class App extends React.Component {
         }
         { this.state.currentRender === 'read' && 
           <View style={styles.container}>
-            <WebView
-              url={''}
-              style={{width: '100%', height: '100%'}}
+            <Header
+              currentView={'read_story'}
             />
+            <View style={{ flex: 11 }}>
+              <WebView
+                source={{uri: this.state.urlForRead}}
+                style={{ width: '100%', height: '100%' }}
+              />
+            </View>
           </View>
         }
       </View>
     );
   }
 
-  launchReadView() {
-    this.setState({ currentRender: 'read' });
+  launchReadView(storyUrl) {
+    this.setState({ currentRender: 'read', urlForRead: storyUrl });
   }
 
   saveTweetData() {

@@ -23,11 +23,12 @@ export default class DayView extends React.Component {
   }
 
   createTweetList(tweets) {
-    return tweets.map(tweet => {
+    return tweets.map((tweet, index) => {
       return (
         <Tweet
+          key={index}
           tweet={tweet}
-          onReadPress={() => this.props.onTweetRead()}
+          onReadPress={(storyUrl) => this.props.onTweetRead(storyUrl)}
           onSavePress={() => this.props.onTweetSave()}
         />
       );
@@ -38,7 +39,7 @@ export default class DayView extends React.Component {
 function getStyling(colorTheme) {
   return StyleSheet.create({
     container: {
-      width: '99%',
+      width: '99.3%',
       flex: 1,
       backgroundColor: '#E8E8E8',
       alignItems: 'center',
@@ -50,13 +51,13 @@ function getStyling(colorTheme) {
       marginBottom: 2.5,
     },
     sideBar: {
-      borderWidth: 2,
-      borderRadius: 2,
+      borderWidth: 1,
+      borderRadius: 1,
       borderColor: colorTheme,
       height: '100%',
     },
     tweets: {
-      width: '97.5%',
+      width: '97.9%',
     },
     header: {
       width: '100%',
