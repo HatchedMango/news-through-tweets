@@ -2,12 +2,17 @@ import requests
 import json
 
 from flask import Flask
-from flask_restful import Resource, Api
-from flask.ext.jsonpify import jsonify
+from flask_restful import Resource, Api, reqparse
 from requests_oauthlib import OAuth1
 
 APP = Flask(__name__)
 API = Api(APP)
+
+request_params_table = {
+    'world_news' : 'worldnews',
+    'us_news' : "usnews",
+    'local_news' : "news" 
+}
 
 def maptweet(tweet):
     if len(tweet['entities']['urls']) > 0 and tweet['entities']['urls'][0].get('url'):
@@ -29,7 +34,14 @@ def maptweet(tweet):
 
 class TwitterNewsData(Resource):
     def get(self):
-        payload = {'q': 'news', 'lang': 'en', 'result_type': 'popular'}
+
+        parser = reqparse.RequestParser()
+        parser.add_argument('news_type', type=str, help='global, national, or local')
+
+        args = parser.parse_args()
+        search_text = self.getsearchtext(args['news_type'])
+
+        params = {'q': search_text, 'lang': 'en', 'result_type': 'popular'}
         url = 'https://api.twitter.com/1.1/search/tweets.json'
 
         auth = OAuth1(
@@ -39,13 +51,16 @@ class TwitterNewsData(Resource):
             'W3nJGED61ALQOerEC6Esl2A74hHeDI4Z8fRSqG9D1besv'
         )
 
-        req_object = requests.get(url, params=payload, auth=auth)
+        req_object = requests.get(url, params=params, auth=auth)
         json_data = req_object.json()
         tweets = json_data["statuses"]
         
         top_tweets = self.filtertoptweets(tweets)
         reduced_tweets = self.reducetweetobjects(top_tweets)
         return json.dumps(list(reduced_tweets))
+
+    def getsearchtext(self, news_type):
+        return request_params_table[news_type]
 
     def filtertoptweets(self, tweets):
         tweets.sort(key=lambda x: x["retweet_count"], reverse=True)
@@ -58,4 +73,4 @@ class TwitterNewsData(Resource):
 API.add_resource(TwitterNewsData, '/news_data')
 
 if __name__ == '__main__':
-    APP.run(debug=True)#, host='0.0.0.0')
+    APP.run(debug=False)

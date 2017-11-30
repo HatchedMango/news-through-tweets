@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, Text, View, Image } from 'react-native';
+import { Button, Image, Navigator, StyleSheet, Text, View } from 'react-native';
 
 export default class Tweet extends React.Component {
   render() {
@@ -10,12 +10,29 @@ export default class Tweet extends React.Component {
         style={{ borderRadius: 3, width: 350, height: 350}}
       />
     );
-    
+
     imageDisplay = (tweet.media_url != '') ? imageDisplay : <Image/>
 
     return (
       <View style={styles.container} class='tweet'>
-        <Text>{tweet.text}</Text>
+        <View style={{ overflow: 'hidden', borderRadius: 3, width: '100%', flexDirection: 'row', justifyContent: 'space-between' }}>
+          <View style={{ width: '49.7%', backgroundColor: '#f5f9fa' }}>
+            <Button
+              onPress={() => this.props.onReadPress()}
+              title="Read"
+            />
+          </View>
+          <View style={{ width: '49.7%', backgroundColor: '#f5f9fa' }}>
+            <Button
+              onPress={() => this.props.onSavePress()}
+              title="Save"
+              color="#841584"
+            />
+          </View>
+        </View>
+        <Text style={{ width: '97%', marginTop: 8, marginBottom: 8, fontFamily: 'Helvetica-Light', fontSize: 15 }}>
+          {tweet.text}
+        </Text>
         {imageDisplay}
       </View>
     );
@@ -36,6 +53,6 @@ const styles = StyleSheet.create({
     shadowColor: 'grey',
     shadowOpacity: 0.5,
     shadowRadius: 1,
-    padding: 4,
+    padding: 2,
   }
 });
