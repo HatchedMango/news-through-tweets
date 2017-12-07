@@ -1,20 +1,34 @@
 import React from 'react';
 
-import { StyleSheet, Text, View, Image } from 'react-native';
-import { getViewIcon, getViewHeader, getStylingForView } from './display.js';
+import { Text, View, Image, TouchableWithoutFeedback } from 'react-native';
+import { headerDisplayDetails } from './display/display';
 
 export default class Header extends React.Component {
   render() {
+    const hdd = headerDisplayDetails;
     const currentView = this.props.currentView;
-    let imageHTML;
-    
-    styling = getStylingForView(currentView);
+    const styles = hdd.getStylingForView(currentView);
+    const iconFunction = this.getIconFunction();
 
     return (
-      <View id='header' style={styling.container}>
-        <Image style={styling.image} source={getViewIcon(currentView, 'white')} />
-        <Text style={styling.heading}>{getViewHeader(currentView)}</Text>
+      <View id='header' style={styles.container}>
+        <TouchableWithoutFeedback onPress={iconFunction}>
+          <Image style={styles.image} source={hdd.getViewIcon(currentView, 'white')} />
+        </TouchableWithoutFeedback>
+        <Text style={styles.title}>{hdd.getViewHeader(currentView)}</Text>
       </View>
     );
+  }
+
+  getIconFunction() {
+    let iconFunction;
+
+    if (this.props.hasIconFunction) {
+      iconFunction = this.props.iconFunction;
+    } else {
+      iconFunction = () => {};
+    }
+
+    return iconFunction;
   }
 }

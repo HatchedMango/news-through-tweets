@@ -3,7 +3,8 @@ import Header from './scripts/Header';
 import Footer from './scripts/Footer';
 import TweetsView from './scripts/TweetsView';
 
-import { StyleSheet, Text, View, WebView } from 'react-native';
+import { Text, View, WebView, ActivityIndicator } from 'react-native';
+import { appDisplayDetails } from './scripts/display/display';
 
 export default class App extends React.Component {
   constructor() {
@@ -19,41 +20,67 @@ export default class App extends React.Component {
   }
 
   render() {
+    styles = appDisplayDetails.getStylingForView();
+
     return (
       <View> 
-        { this.state.currentRender === 'main' && 
-          <View style={styles.container}>
-            <Header
-              currentView={this.state.currentView}
-            />
-            <View style={styles.scrollableView}>
-              <TweetsView
-                tweets={this.state.tweetsForView}
-                onTweetRead={(storyUrl) => this.launchReadView(storyUrl)}
-                onTweetSave={() => this.saveTweetData()}
-              />
-            </View>
-            <Footer
-              currentView={this.state.currentView}
-              onViewSelect={(newView) => this.changeView(newView)}
-            />
-          </View>
-        }
-        { this.state.currentRender === 'read' && 
-          <View style={styles.container}>
-            <Header
-              currentView={'read_story'}
-            />
-            <View style={{ flex: 11 }}>
-              <WebView
-                source={{uri: this.state.urlForRead}}
-                style={{ width: '100%', height: '100%' }}
-              />
-            </View>
-          </View>
-        }
+        { this.state.currentRender === 'main' && this.getMainRender(styles) }
+        { this.state.currentRender === 'read' && this.getReadRender(styles) }
       </View>
     );
+  }
+
+  getMainRender(styles) {
+    return (
+      <View style={styles.container}>
+        <Header
+          currentView={this.state.currentView}
+          hasIconFunction={false}
+        />
+        <View style={styles.scrollableView}>
+          <TweetsView
+            tweets={this.state.tweetsForView}
+            onTweetRead={(storyUrl) => this.launchReadView(storyUrl)}
+            onTweetSave={() => this.saveTweetData()}
+          />
+        </View>
+        <Footer
+          currentView={this.state.currentView}
+          onViewSelect={(newView) => this.changeView(newView)}
+        />
+      </View>
+    );
+  }
+
+  getReadRender(styles) {
+    return (
+      <View style={styles.container}>
+        <Header
+          currentView={'read_story'}
+          hasIconFunction={true}
+          iconFunction={() => this.returnToMain()}
+        />
+        <View style={styles.webViewContainer}>
+          <WebView
+            source={{uri: this.state.urlForRead}}
+            style={styles.webView}
+            startInLoadingState={true}
+          >
+          </WebView>
+        </View>
+      </View>
+    );
+  }
+
+  changeView(newView) {
+    if (newView != this.state.currentView) {
+      this.setState({ currentView: newView });
+      this.fetchTweetsDummy(newView);
+    }
+  }
+
+  returnToMain() {
+    this.setState({ currentRender: 'main', urlForRead: '' });
   }
 
   launchReadView(storyUrl) {
@@ -62,13 +89,6 @@ export default class App extends React.Component {
 
   saveTweetData() {
     
-  }
-
-  changeView(newView) {
-    if (newView != this.state.currentView) {
-      this.setState({ currentView: newView });
-      this.fetchTweetsDummy(newView);
-    }
   }
 
   fetchTweetsDummy(newView) {
@@ -92,18 +112,3 @@ export default class App extends React.Component {
     });
   }
 }
-
-const styles = StyleSheet.create({
-  container: {
-    height: '100%',
-    backgroundColor: '#fff',
-    justifyContent: 'space-between',
-  },
-  scrollableView: {
-    flex: 10,
-    width: '100%',
-    backgroundColor: '#fff',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-  }
-});

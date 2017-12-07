@@ -1,9 +1,12 @@
 import React from 'react';
 import DayView from './DayView';
-import { StyleSheet, Text, ScrollView } from 'react-native';
+
+import { Text, ScrollView } from 'react-native';
+import { tweetsViewDisplayDetails } from './display/display';
 
 export default class TweetsView extends React.Component {
   render() {
+    const styles = tweetsViewDisplayDetails.getStylingForView();
     const dayViews = this.createDayViews(this.props.tweets);
 
     return (
@@ -44,11 +47,3 @@ export default class TweetsView extends React.Component {
     return ['Today', 'Yesterday', ...remainingDays];
   }
 }
-
-const styles = StyleSheet.create({
-  container: {
-    width: '100%',
-    flex: 1,
-    backgroundColor: '#fff',
-  }
-});

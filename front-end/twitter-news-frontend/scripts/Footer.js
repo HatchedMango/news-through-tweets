@@ -1,52 +1,37 @@
 import React from 'react';
 
-import { StyleSheet, Text, View, Image, TouchableWithoutFeedback } from 'react-native';
-import { getFooterViewIcons, getListOfViews } from './display.js';
+import { Text, View, Image, TouchableWithoutFeedback } from 'react-native';
+import { footerDisplayDetails } from './display/display';
 
 export default class Footer extends React.Component {
   render() {
+    const fdd = footerDisplayDetails;
+    const styles = fdd.getStylingForView();
     const currentView = this.props.currentView;
 
     return (
       <View id='footer' style={styles.container}>
-      {this.createIconDisplays(currentView)}
+      {this.createIconDisplays(currentView, fdd, styles)}
       </View>
     );
   }
 
-  createIconDisplays(currentView) {
-    const viewIconsList = getFooterViewIcons(currentView);
-    const viewList = getListOfViews();
+  createIconDisplays(currentView, fdd, styles) {
+    const viewIconsList = fdd.getFooterViewIcons(currentView);
+    const viewList = fdd.getListOfViews();
 
     return viewIconsList.map((icon, index) => {
       return (
-        <TouchableWithoutFeedback key={index} onPress={() => this.props.onViewSelect(viewList[index])}>
+        <TouchableWithoutFeedback 
+          key={index} 
+          onPress={() => this.props.onViewSelect(viewList[index])}
+        >
           <Image 
             style={styles.image} 
             source={icon}
-            onPress={() => this.props.onViewSelect(viewList[index])}
           />
         </TouchableWithoutFeedback>
       );
     });
   }
 }
-
-const styles = StyleSheet.create({
-  container: {
-    width: '100%',
-    flex: 1,
-    backgroundColor: '#E8E8E8',
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    borderTopColor: '#808080',
-    borderTopWidth: 0.5,
-  },
-  image: {
-    width: 45,
-    height: 45,
-    marginLeft: 15,
-    marginRight: 15,
-  }
-});
