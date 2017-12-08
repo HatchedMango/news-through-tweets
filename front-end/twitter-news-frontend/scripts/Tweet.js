@@ -26,8 +26,10 @@ export default class Tweet extends React.Component {
 
   createTitle(styles, tweet) {
     return (
-      <View style={styles.button}>
-        {tweet.title}
+      <View style={styles.title}>
+        <Text style={styles.titleText}>
+          {'@ ' + tweet.title}
+        </Text>
       </View>
     );
   }

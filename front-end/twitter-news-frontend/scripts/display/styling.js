@@ -167,4 +167,18 @@ export const tweetStyles = StyleSheet.create({
     fontFamily: 'Helvetica-Light', 
     fontSize: 15 
   },
+  titleText: {
+    fontSize: 25,
+    fontFamily: 'Helvetica-Light', 
+  },
+  title: {
+    overflow: 'hidden',
+    borderBottomColor: '#b3b3b3',
+    borderBottomWidth: 0.5,
+    width: '100%', 
+    marginBottom: 3,
+    paddingLeft: 5,
+    paddingTop: 2,
+    paddingBottom: 2,
+  }
 });
