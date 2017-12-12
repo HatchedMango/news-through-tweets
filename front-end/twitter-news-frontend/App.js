@@ -3,7 +3,7 @@ import Header from './scripts/Header';
 import Footer from './scripts/Footer';
 import TweetsView from './scripts/TweetsView';
 
-import { Text, View, WebView, ActivityIndicator } from 'react-native';
+import { Text, View, WebView, ActivityIndicator, AsyncStorage } from 'react-native';
 import { appDisplayDetails } from './scripts/display/display';
 
 export default class App extends React.Component {
@@ -94,19 +94,23 @@ export default class App extends React.Component {
     const currentSaved = this.state.savedTweets;
     this.setState({ savedTweets: [tweet, ...currentSaved] });
     
-    (async () => {
-      await AsyncStorage.setItem(`@TwitterNewsStore:${tweet.id}title`, tweet.title);
-      await AsyncStorage.setItem(`@TwitterNewsStore:${tweet.id}text`, tweet.text);
-      await AsyncStorage.setItem(`@TwitterNewsStore:${tweet.id}source_url`, tweet.source_url);
-      await AsyncStorage.setItem(`@TwitterNewsStore:${tweet.id}media_url`, tweet.media_url);
-    })();
+    AsyncStorage.setItem(`@TwitterNewsStore:${tweet.id}`, JSON.stringify(tweet));
   }
 
   loadSavedTweets() {
-    (async () => {
-      const tweet;
-      const tweet.title = await AsyncStorage.getItem(`@TwitterNewsStore:${tweet.id}title`);
-    })();
+    this.getAllSavedTweets()
+      .then(tweets => {
+        this.setState({ savedTweets: tweets });
+      });
+  }
+
+  getAllSavedTweets() {
+    return Promise.all(AsyncStorage.getAllKeys()
+      .then(keys => {
+        return keys.map(key => {
+          return JSON.parse(AsyncStorage.getItem(key));
+        });
+      }));
   }
 
   fetchTweetsDummy(newView) {
