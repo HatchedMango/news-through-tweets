@@ -47,7 +47,9 @@ export default class TweetsView extends React.Component {
 
     if (currentView === 'saved_news')
       days = ['Saved News'];
-    else 
+    else if (currentView === 'local_news')
+      days = ['This Week'];
+    else
       days = ['Today', 'Yesterday', ...remainingDays];
 
     return days;

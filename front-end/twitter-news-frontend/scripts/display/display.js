@@ -1,5 +1,5 @@
 import dictionaries from './dictionaries';
-import { appStyles, footerStyles, tweetsViewStyles, getDayViewStyles, tweetStyles } from './styling';
+import { getAppStyles, footerStyles, tweetsViewStyles, getDayViewStyles, tweetStyles } from './styling';
 
 // functions returning footer display details belong here
 function getStylingForFooter() {
@@ -36,7 +36,7 @@ function getViewHeader(view) {
 }
 
 export const appDisplayDetails = {
-  getStylingForView: () => appStyles,
+  getStylingForView: getAppStyles,
 }
 
 export const tweetsViewDisplayDetails = {

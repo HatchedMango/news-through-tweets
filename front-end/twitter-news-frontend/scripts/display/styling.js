@@ -1,24 +1,31 @@
 import { StyleSheet } from 'react-native';
 
-export const appStyles = StyleSheet.create({
-  container: {
-    height: '100%',
-  },
-  scrollableView: {
-    flex: 10,
-    width: '100%',
-    backgroundColor: '#fff',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-  },
-  webView: {
-    height: '100%',
-    width: '100%',
-  },
-  webViewContainer: {
-    flex: 11,
-  },
-});
+export function getAppStyles(isLoading) {
+  const loadHeight = isLoading ? '100%' : '0%';
+  
+  return StyleSheet.create({
+    container: {
+      height: '100%',
+    },
+    scrollableView: {
+      flex: 10,
+      width: '100%',
+      backgroundColor: '#fff',
+      justifyContent: 'space-between',
+      alignItems: 'center',
+    },
+    webView: {
+      height: '100%',
+      width: '100%',
+    },
+    webViewContainer: {
+      flex: 11,
+    },
+    loadContainer: {
+      height: loadHeight
+    }
+  });
+}
 
 export const headerStyles = StyleSheet.create({
     container: {
