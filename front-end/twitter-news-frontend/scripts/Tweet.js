@@ -45,7 +45,7 @@ export default class Tweet extends React.Component {
         </View>
         <View style={styles.button}>
           <Button
-            onPress={() => this.props.onSavePress()}
+            onPress={() => this.props.onSavePress(tweet)}
             title="Save"
             color="#841584"
           />

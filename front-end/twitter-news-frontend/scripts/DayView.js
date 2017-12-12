@@ -31,7 +31,7 @@ export default class DayView extends React.Component {
           key={index}
           tweet={tweet}
           onReadPress={(storyUrl) => this.props.onTweetRead(storyUrl)}
-          onSavePress={() => this.props.onTweetSave()}
+          onSavePress={(tweet) => this.props.onTweetSave(tweet)}
         />
       );
     });

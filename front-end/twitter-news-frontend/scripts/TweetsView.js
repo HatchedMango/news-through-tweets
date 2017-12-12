@@ -7,7 +7,7 @@ import { tweetsViewDisplayDetails } from './display/display';
 export default class TweetsView extends React.Component {
   render() {
     const styles = tweetsViewDisplayDetails.getStylingForView();
-    const dayViews = this.createDayViews(this.props.tweets);
+    const dayViews = this.createDayViews(this.props.tweets, this.props.currentView);
 
     return (
       <ScrollView id='tweets-view' style={styles.container}>
@@ -16,8 +16,8 @@ export default class TweetsView extends React.Component {
     );
   }
 
-  createDayViews(tweetsByDay) {
-    const dayNames = this.createDayNames();
+  createDayViews(tweetsByDay, currentView) {
+    const dayNames = this.createDayNames(currentView);
     const dayColorThemes = ['#4CAF50','#d14836', '#4285f4', '#ef6c00', '#4CAF50'];
 
     return tweetsByDay.map((tweets, index) => {
@@ -28,22 +28,28 @@ export default class TweetsView extends React.Component {
           dayName={dayNames[index]}
           dayColorTheme={dayColorThemes[index]}
           onTweetRead={(storyUrl) => this.props.onTweetRead(storyUrl)}
-          onTweetSave={() => this.props.onTweetSave()}
+          onTweetSave={(tweet) => this.props.onTweetSave(tweet)}
         />
       );
     });
   }
 
-  createDayNames() {
+  createDayNames(currentView) {
     const daysOfWeek = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
     const dateHandler = new Date();
     const currentDay = dateHandler.getDay();
+    let days;
 
     const remainingDays = daysOfWeek.map((item, index) => {
       const newItemIndex = 6 - ((index + currentDay + 4) % 7);
       return daysOfWeek[newItemIndex]; 
     }).slice(0, 4);
 
-    return ['Today', 'Yesterday', ...remainingDays];
+    if (currentView === 'saved_news')
+      days = ['Saved News'];
+    else 
+      days = ['Today', 'Yesterday', ...remainingDays];
+
+    return days;
   }
 }

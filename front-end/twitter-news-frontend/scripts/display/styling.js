@@ -30,6 +30,15 @@ export const headerStyles = StyleSheet.create({
       borderBottomColor: '#808080',
       borderBottomWidth: 0.5,
     },
+    readContainer: {
+      width: '100%',
+      flex: 1.1,
+      backgroundColor: '#2c5566',
+      flexDirection: 'row',
+      alignItems: 'flex-end',
+      borderBottomColor: '#808080',
+      borderBottomWidth: 0.5,
+    },
     image: {
       width: 50,
       height: 50,

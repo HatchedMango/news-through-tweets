@@ -27,7 +27,7 @@ const headerStylingTable = {
       'image': headerStyles.searchImage,
     },
     'read_story': {
-      'container': headerStyles.container,
+      'container': headerStyles.readContainer,
       'title': headerStyles.title,
       'image': headerStyles.returnImage,
     }
